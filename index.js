@@ -191,10 +191,7 @@ class Autocomplete extends Component {
   }
 }
 
-const border = {
-  borderColor: '#b9b9b9',
-  borderRadius: 1,
-  borderWidth: 1
+const border = { 
 };
 
 const androidStyles = {
