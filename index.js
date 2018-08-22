@@ -132,7 +132,8 @@ class Autocomplete extends Component {
       onEndReachedThreshold, 
       onTouchStart,
       onMomentumScrollEnd,
-      onScrollEndDrag
+      onScrollEndDrag,
+      onTouchCancel
     } = this.props;
 
     return (
