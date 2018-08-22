@@ -140,6 +140,7 @@ class Autocomplete extends Component {
         onTouchStart={onTouchStart}
         onMomentumScrollEnd={onMomentumScrollEnd}
         onScrollEndDrag={onScrollEndDrag}
+        onTouchCancel={onTouchCancel}
         ref={(resultList) => { this.resultList = resultList; }}
         dataSource={dataSource}
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
