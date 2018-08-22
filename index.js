@@ -129,11 +129,17 @@ class Autocomplete extends Component {
       renderSeparator,
       keyboardShouldPersistTaps,
       onEndReached,
-      onEndReachedThreshold
+      onEndReachedThreshold, 
+      onTouchStart,
+      onMomentumScrollEnd,
+      onScrollEndDrag
     } = this.props;
 
     return (
       <ListView
+        onTouchStart={onTouchStart}
+        onMomentumScrollEnd={onMomentumScrollEnd}
+        onScrollEndDrag={onScrollEndDrag}
         ref={(resultList) => { this.resultList = resultList; }}
         dataSource={dataSource}
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
