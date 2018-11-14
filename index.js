@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  ListView,
+import { 
   Platform,
   StyleSheet,
   Text,
   TextInput,
   View,
+  FlatList,
   ViewPropTypes as RNViewPropTypes
 } from 'react-native';
 
@@ -49,7 +49,7 @@ class Autocomplete extends Component {
     /**
      * These style will be applied to the result list.
      */
-    listStyle: ListView.propTypes.style,
+    listStyle: FlatList.propTypes.style,
     /**
      * `onShowResults` will be called when list is going to
      * show/hide results.
@@ -88,20 +88,18 @@ class Autocomplete extends Component {
     onStartShouldSetResponderCapture: () => false,
     renderItem: rowData => <Text>{rowData}</Text>,
     renderSeparator: null,
-    renderTextInput: props => <TextInput {...props} />,
-    rowHasChanged: (r1, r2) => r1 !== r2
+    renderTextInput: props => <TextInput {...props} /> 
   };
 
   constructor(props) {
     super(props);
-
-    const ds = new ListView.DataSource({ rowHasChanged: props.rowHasChanged });
-    this.state = { dataSource: ds.cloneWithRows(props.data) };
+ 
+    this.state = { dataSource: props.data };
     this.resultList = null;
   }
 
   componentWillReceiveProps({ data }) {
-    const dataSource = this.state.dataSource.cloneWithRows(data);
+    const dataSource = data;
     this.setState({ dataSource });
   }
 
@@ -122,7 +120,7 @@ class Autocomplete extends Component {
   }
 
   renderResultList() {
-    const { dataSource } = this.state;
+    const { data } = this.props;
     const {
       listStyle,
       renderItem,
@@ -137,16 +135,17 @@ class Autocomplete extends Component {
     } = this.props;
 
     return (
-      <ListView
+      <FlatList
         onTouchStart={onTouchStart}
         onMomentumScrollEnd={onMomentumScrollEnd}
         onScrollEndDrag={onScrollEndDrag}
         onTouchCancel={onTouchCancel}
         ref={(resultList) => { this.resultList = resultList; }}
-        dataSource={dataSource}
+        data={data} 
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-        renderRow={renderItem}
+        renderItem={renderItem}
         renderSeparator={renderSeparator}
+        extraData={this.props}
         onEndReached={onEndReached}
         onEndReachedThreshold={onEndReachedThreshold}
         style={[styles.list, listStyle]}
@@ -176,7 +175,7 @@ class Autocomplete extends Component {
       onShowResults,
       onStartShouldSetResponderCapture
     } = this.props;
-    const showResults = dataSource.getRowCount() > 0;
+    const showResults = dataSource.length > 0;
 
     // Notify listener if the suggestion will be shown.
     onShowResults && onShowResults(showResults);
