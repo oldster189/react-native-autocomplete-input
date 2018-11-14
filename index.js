@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { 
+  FlatList,
   Platform,
   StyleSheet,
   Text,
   TextInput,
   View,
-  FlatList,
   ViewPropTypes as RNViewPropTypes
 } from 'react-native';
 
@@ -49,7 +49,7 @@ class Autocomplete extends Component {
     /**
      * These style will be applied to the result list.
      */
-    listStyle: FlatList.propTypes.style,
+    listStyle: ViewPropTypes.style,
     /**
      * `onShowResults` will be called when list is going to
      * show/hide results.
@@ -94,13 +94,13 @@ class Autocomplete extends Component {
   constructor(props) {
     super(props);
  
-    this.state = { dataSource: props.data };
+    this.state = { dataSource: props.data }; 
     this.resultList = null;
   }
 
   componentWillReceiveProps({ data }) {
     const dataSource = data;
-    this.setState({ dataSource });
+    this.setState({ dataSource }); 
   }
 
   /**
@@ -120,7 +120,7 @@ class Autocomplete extends Component {
   }
 
   renderResultList() {
-    const { data } = this.props;
+    const { dataSource } = this.state;
     const {
       listStyle,
       renderItem,
@@ -132,8 +132,8 @@ class Autocomplete extends Component {
       onMomentumScrollEnd,
       onScrollEndDrag,
       onTouchCancel
-    } = this.props;
-
+    } = this.props; 
+    
     return (
       <FlatList
         onTouchStart={onTouchStart}
@@ -141,14 +141,16 @@ class Autocomplete extends Component {
         onScrollEndDrag={onScrollEndDrag}
         onTouchCancel={onTouchCancel}
         ref={(resultList) => { this.resultList = resultList; }}
-        data={data} 
+
+        style={[styles.list, listStyle]} 
+        data={dataSource} 
+        renderItem={ data => renderItem(data.item)}
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-        renderItem={renderItem}
-        renderSeparator={renderSeparator}
-        extraData={this.props}
+        renderSeparator={renderSeparator} 
+        keyExtractor={item => item._id}
+        extraData={this.state}
         onEndReached={onEndReached}
         onEndReachedThreshold={onEndReachedThreshold}
-        style={[styles.list, listStyle]}
       />
     );
   }
@@ -186,10 +188,10 @@ class Autocomplete extends Component {
           {this.renderTextInput()}
         </View>
         {!hideResults && (
-          <View
+          <View 
             style={listContainerStyle}
             onStartShouldSetResponderCapture={onStartShouldSetResponderCapture}
-          >
+          > 
             {showResults && this.renderResultList()}
           </View>
         )}
