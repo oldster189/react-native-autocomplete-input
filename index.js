@@ -131,6 +131,7 @@ class Autocomplete extends Component {
       onTouchStart,
       onMomentumScrollEnd,
       onScrollEndDrag,
+      onScroll,
       onTouchCancel
     } = this.props; 
     
@@ -141,7 +142,7 @@ class Autocomplete extends Component {
         onScrollEndDrag={onScrollEndDrag}
         onTouchCancel={onTouchCancel}
         ref={(resultList) => { this.resultList = resultList; }}
-
+        onScroll={onScroll}
         style={[styles.list, listStyle]} 
         data={dataSource} 
         renderItem={ data => renderItem(data.item)}
